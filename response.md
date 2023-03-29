@@ -16,10 +16,8 @@
 - [x] Process a user purchases a mask from a pharmacy, and handle all relevant data changes in an atomic transaction.
   - Implemented at `POST /api/v1/purchase/mask` API.
 ### A.2. API Document
-> Please describe how to use the API in the API documentation. You can edit by any format (e.g., Markdown or OpenAPI) or free tools (e.g., [hackMD](https://hackmd.io/), [postman](https://www.postman.com/), [google docs](https://docs.google.com/document/u/0/), or  [swagger](https://swagger.io/specification/)).
-
 Import [kdan.swagger.json](doc/kdan/kdan.swagger.json) json file to Postman.
-Or you can 
+Or you can visit https://tooru.info/docs/ for detailed API document and test the API.
 
 ### A.3. Import Data Commands
 Please run these commands to migrate the data into the database.
@@ -44,7 +42,11 @@ On the local machine, please follow the commands below to build it.
 # Run docker-compose.local.yml
 $ make up
 
+# If you install migrate
 $ make migration_up
+# else
+$ docker run -v ./phantom_mask/internal/data/migrations:/migrations --network host migrate/migrate -path=/migrations/ -database "postgres://kdan:kdan@localhost:5432/kdan?sslmode=disable" up 1
+
 # Ingest JSON data to postgresql
 $ go run ./cmd/client/ingestion.go
 ```
@@ -64,8 +66,7 @@ $ go run ./cmd/client/ingestion.go
 ```
 
 ### B.3. Demo Site Url
-
-Not implemented
+Please go to https://tooru.info/ (e.g. https://tooru.info/api/v1/pharmacies?name=care)
 
 ## C. Other Information
 
