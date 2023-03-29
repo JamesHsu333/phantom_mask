@@ -28,6 +28,8 @@ RUN cp /build/server .
 FROM alpine:latest
 RUN apk --no-cache add ca-certificates
 
+ENV config=docker
+
 COPY . .
 COPY --from=builder /dist/server /
 # Copy the code into the container
