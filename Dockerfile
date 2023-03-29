@@ -17,7 +17,7 @@ COPY . .
 
 # Build the application
 # go build -o [name] [path to file]
-RUN go install -o server cmd/server/main.go
+RUN go build -o server cmd/server/main.go
 
 # Move to /dist directory as the place for resulting binary folder
 WORKDIR /dist
