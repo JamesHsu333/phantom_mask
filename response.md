@@ -49,6 +49,20 @@ $ make migration_up
 $ go run ./cmd/client/ingestion.go
 ```
 
+Or you can build local docker-compose.local.yml and run go app instead
+
+```bash
+# Run docker-compose.local.yml
+$ make local
+
+# Run go app
+$ make run
+
+$ make migration_up
+# Ingest JSON data to postgresql
+$ go run ./cmd/client/ingestion.go
+```
+
 ### B.3. Demo Site Url
 
 Not implemented
