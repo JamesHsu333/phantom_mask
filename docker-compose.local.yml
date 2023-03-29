@@ -1,0 +1,30 @@
+version: "3.9"
+
+services: 
+    postgesql:
+        image: postgres:15-alpine
+        container_name: postgesql
+        ports:
+        - "5432:5432"
+        restart: always
+        environment:
+          - POSTGRES_USER=kdan
+          - POSTGRES_PASSWORD=kdan
+          - POSTGRES_DB=kdan
+        volumes:
+          - ./pgdata:/var/lib/postgresql/data
+        networks:
+          - kdan_web
+    swagger-ui:
+        image: swaggerapi/swagger-ui
+        container_name: swagger_ui
+        ports:
+        - "1001:8080"
+        volumes:
+          - ./doc:/usr/share/nginx/html/doc
+        environment:
+          API_URL: doc/kdan/kdan.swagger.json
+
+networks:
+    kdan_web:
+        driver: bridge

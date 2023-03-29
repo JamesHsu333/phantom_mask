@@ -1,0 +1,188 @@
+// @proto/ type following command to build pb.go
+// protoc --proto_path=./ --go_out=./ --go-grpc_out=./ --grpc-gateway_out ./ --go_opt=paths=source_relative --go-grpc_opt=paths=source_relative --grpc-gateway_opt logtostderr=true --grpc-gateway_opt=paths=source_relative kdan/kdan.proto
+// protoc -I . --openapiv2_out=../doc kdan/kdan.proto
+syntax = "proto3";
+
+import "pharmacy/pharmacy.proto";
+import "grpc-gateway/protoc-gen-openapiv2/options/annotations.proto";
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+
+package kdan;
+option go_package = "github.com/JamesHsu333/kdan/proto/kdan;kdanProto";
+
+enum DayOfWeek {
+  unspecified = 0;
+  mon = 1;
+  tue = 2;
+  wed = 3;
+  thur = 4;
+  fri = 5;
+  sat = 6;
+  sun = 7;
+}
+
+enum Order {
+  asc = 0;
+  desc = 1;
+}
+
+message GetPharmaciesByTimeRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+        title: "GetPharmaciesByTimeRequest"
+        description: "List all pharmacies open at a specific time and on a day of the week if requested."
+    }
+  };
+  DayOfWeek day = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {description: "The Day field. e.g. can use mon or 1 to represent Monday"}];
+  int32 hour = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {description: "The Hour field. e.g. 10 represent 10:00"}];
+  int32 minute = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {description: "The Minute field. e.g. 30 represent 30 minutes"}];;
+}
+
+message GetPharmaciesByTimeResponse {
+  repeated pharmacy.Pharmacy pharmacies = 1;
+}
+
+message GetSoldMasksByPharmacyRequest {
+  string name = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {description: "The Pharmacy Name field."}];
+  enum SortedBy {
+    mask_name = 0;
+    mask_price = 1;
+  }
+  SortedBy sorted_by = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {description: "The Sorted by field. e.g. can use mask_name or mask_price"}];
+  Order order_by = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {description: "The Order field. e.g. can use asc or desc"}];
+}
+
+message GetSoldMasksByPharmacyResponse {
+  message sold_mask {
+    int32 mask_id = 1;
+    string mask_name = 2;
+    int32 pharmacy_id = 3; 
+    string pharmacy_name = 4;
+    float price = 5;
+    google.protobuf.Timestamp sold_at = 6;
+  }
+  repeated sold_mask sold_masks = 1;
+}
+
+message GetPharmaciesMaskCountsByMaskPriceRangeRequest {
+  float start_price = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {description: "The start price field."}];
+  float end_price = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {description: "The end price field."}];;
+  int32 mask_type_count = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {description: "The mask type count field."}];;;
+  bool  more_than = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {description: "The more than field. e.g. True would be more than, False would be less than"}];;;
+}
+
+message GetPharmaciesMaskCountsByMaskPriceRangeResponse {
+  message pharmacies_mask_count {
+    int32 pharmacy_id = 1;
+    string pharmacy_name = 2;
+    int32 mask_type_count = 3;
+  }
+  repeated pharmacies_mask_count pharmacies_mask_counts = 1;
+}
+
+message GetTopXUsersTransactionByDateRangeRequest {
+  google.protobuf.Timestamp start_at = 1;
+  google.protobuf.Timestamp end_at = 2;
+  int32 size = 3;
+}
+
+message GetTopXUsersTransactionByDateRangeResponse {
+  message user_transaction {
+    int32 user_id = 1;
+    string user_name = 2;
+    float total_transaction_amount = 3;
+  }
+  repeated user_transaction user_transactions = 1;
+}
+
+message GetAggTransactionsByDateRangeRequest {
+  google.protobuf.Timestamp start_at = 1;
+  google.protobuf.Timestamp end_at = 2;
+}
+
+message GetAggTransactionsByDateRangeResponse {
+  message mask_transaction {
+    int32 mask_id = 1;
+    string mask_name = 2;
+    int32 sold_mask_count = 3;
+    float total_transaction_amount = 4;
+  }
+  repeated mask_transaction mask_transactions = 1;
+}
+
+message GetPharmaciesByNameRelevancyRequest {
+  string name = 1;
+}
+
+message GetPharmaciesByNameRelevancyResponse {
+  repeated pharmacy.Pharmacy pharmacies = 1;
+}
+
+message GetMasksByNameRelevancyRequest {
+  string name = 1;
+}
+
+message GetMasksByNameRelevancyResponse {
+  repeated pharmacy.Mask masks = 1;
+}
+
+message PurchaseMaskFromPharmacyRequest {
+  int32 user_id = 1;
+  int32 pharmacy_id = 2;
+  int32 mask_id = 3;
+}
+
+message PurchaseMaskFromPharmacyResponse {
+  int32 id = 1;
+  int32 user_id = 2;
+  int32 pharmacy_id = 3;
+  int32 mask_id = 4;
+  float transaction_amount = 5;
+  google.protobuf.Timestamp transaction_date = 6;
+}
+
+service KdanService{
+  rpc GetPharmaciesByTime(GetPharmaciesByTimeRequest) returns (GetPharmaciesByTimeResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/pharmacies/by/time",
+    };
+  };
+  rpc GetSoldMasksByPharmacy(GetSoldMasksByPharmacyRequest) returns (GetSoldMasksByPharmacyResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/soldmasks/by/pharmacy",
+    };
+  };
+  rpc GetPharmaciesMaskCountsByMaskPriceRange(GetPharmaciesMaskCountsByMaskPriceRangeRequest) returns (GetPharmaciesMaskCountsByMaskPriceRangeResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/pharmacies/masks/count"
+    };
+  }
+  rpc GetTopXUsersTransactionByDateRange(GetTopXUsersTransactionByDateRangeRequest) returns (GetTopXUsersTransactionByDateRangeResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/usertrans/by/time",
+    };
+  };
+  rpc GetAggTransactionsByDateRange(GetAggTransactionsByDateRangeRequest) returns(GetAggTransactionsByDateRangeResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/masktrans/by/time",
+    };
+  };
+  rpc GetPharmaciesByNameRelevancy(GetPharmaciesByNameRelevancyRequest) returns(GetPharmaciesByNameRelevancyResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/pharmacies",
+    };
+  };
+  rpc GetMasksByNameRelevancy(GetMasksByNameRelevancyRequest) returns(GetMasksByNameRelevancyResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/masks",
+    };
+  };
+  rpc PurchaseMaskFromPharmacy(PurchaseMaskFromPharmacyRequest) returns(PurchaseMaskFromPharmacyResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/purchase/mask",
+      body: "*"
+    };
+  };
+}

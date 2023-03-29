@@ -1,0 +1,49 @@
+// @proto/ type following command to build pb.go
+// protoc --proto_path=./ --go_out=./ --go-grpc_out=./ --grpc-gateway_out ./ --go_opt=paths=source_relative --go-grpc_opt=paths=source_relative --grpc-gateway_opt logtostderr=true --grpc-gateway_opt=paths=source_relative user/user.proto
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package user;
+option go_package = "github.com/JamesHsu333/kdan/proto/user;userProto";
+
+message User {
+  string user_id = 1;
+  string user_name = 2;
+  string name = 3;
+  string email = 4;
+  optional string password = 5;
+  string role = 6;
+  optional string about = 7;
+  optional string avatar = 8;
+  optional string header = 9;
+  google.protobuf.Timestamp created_at = 10;
+  google.protobuf.Timestamp updated_at = 11;
+  google.protobuf.Timestamp login_date = 12; 
+}
+
+message Auth {
+  string user_id = 1;
+  string user_name = 2;
+  string email = 3;
+  string role = 4;
+  string auth_token = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp login_date = 7;
+}
+
+message UsersList {
+  int32 total_count = 1;
+	int32 total_pages = 2;
+	int32 page = 3;
+	int32 size = 4;
+	bool has_more = 5;
+  repeated User users = 6;
+}
+
+message UploadInput {
+  bytes file = 1;
+  string name = 2;
+	string size = 3;
+	string content_type = 4;
+}

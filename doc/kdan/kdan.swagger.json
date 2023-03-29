@@ -1,0 +1,658 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "kdan/kdan.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "KdanService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/masks": {
+      "get": {
+        "operationId": "KdanService_GetMasksByNameRelevancy",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/kdanGetMasksByNameRelevancyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "KdanService"
+        ]
+      }
+    },
+    "/api/v1/masktrans/by/time": {
+      "get": {
+        "operationId": "KdanService_GetAggTransactionsByDateRange",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/kdanGetAggTransactionsByDateRangeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "startAt",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "endAt",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "tags": [
+          "KdanService"
+        ]
+      }
+    },
+    "/api/v1/pharmacies": {
+      "get": {
+        "operationId": "KdanService_GetPharmaciesByNameRelevancy",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/kdanGetPharmaciesByNameRelevancyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "KdanService"
+        ]
+      }
+    },
+    "/api/v1/pharmacies/by/time": {
+      "get": {
+        "operationId": "KdanService_GetPharmaciesByTime",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/kdanGetPharmaciesByTimeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "day",
+            "description": "The Day field. e.g. can use mon or 1 to represent Monday",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "unspecified",
+              "mon",
+              "tue",
+              "wed",
+              "thur",
+              "fri",
+              "sat",
+              "sun"
+            ],
+            "default": "unspecified"
+          },
+          {
+            "name": "hour",
+            "description": "The Hour field. e.g. 10 represent 10:00",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "minute",
+            "description": "The Minute field. e.g. 30 represent 30 minutes",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "KdanService"
+        ]
+      }
+    },
+    "/api/v1/pharmacies/masks/count": {
+      "get": {
+        "operationId": "KdanService_GetPharmaciesMaskCountsByMaskPriceRange",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/kdanGetPharmaciesMaskCountsByMaskPriceRangeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "startPrice",
+            "description": "The start price field.",
+            "in": "query",
+            "required": false,
+            "type": "number",
+            "format": "float"
+          },
+          {
+            "name": "endPrice",
+            "description": "The end price field.",
+            "in": "query",
+            "required": false,
+            "type": "number",
+            "format": "float"
+          },
+          {
+            "name": "maskTypeCount",
+            "description": "The mask type count field.",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "moreThan",
+            "description": "The more than field. e.g. True would be more than, False would be less than",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "KdanService"
+        ]
+      }
+    },
+    "/api/v1/purchase/mask": {
+      "post": {
+        "operationId": "KdanService_PurchaseMaskFromPharmacy",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/kdanPurchaseMaskFromPharmacyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/kdanPurchaseMaskFromPharmacyRequest"
+            }
+          }
+        ],
+        "tags": [
+          "KdanService"
+        ]
+      }
+    },
+    "/api/v1/soldmasks/by/pharmacy": {
+      "get": {
+        "operationId": "KdanService_GetSoldMasksByPharmacy",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/kdanGetSoldMasksByPharmacyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "name",
+            "description": "The Pharmacy Name field.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sortedBy",
+            "description": "The Sorted by field. e.g. can use mask_name or mask_price",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "mask_name",
+              "mask_price"
+            ],
+            "default": "mask_name"
+          },
+          {
+            "name": "orderBy",
+            "description": "The Order field. e.g. can use asc or desc",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "default": "asc"
+          }
+        ],
+        "tags": [
+          "KdanService"
+        ]
+      }
+    },
+    "/api/v1/usertrans/by/time": {
+      "get": {
+        "operationId": "KdanService_GetTopXUsersTransactionByDateRange",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/kdanGetTopXUsersTransactionByDateRangeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "startAt",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "endAt",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "KdanService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "GetAggTransactionsByDateRangeResponsemask_transaction": {
+      "type": "object",
+      "properties": {
+        "maskId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maskName": {
+          "type": "string"
+        },
+        "soldMaskCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "totalTransactionAmount": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    },
+    "GetPharmaciesMaskCountsByMaskPriceRangeResponsepharmacies_mask_count": {
+      "type": "object",
+      "properties": {
+        "pharmacyId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pharmacyName": {
+          "type": "string"
+        },
+        "maskTypeCount": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "GetSoldMasksByPharmacyRequestSortedBy": {
+      "type": "string",
+      "enum": [
+        "mask_name",
+        "mask_price"
+      ],
+      "default": "mask_name"
+    },
+    "GetSoldMasksByPharmacyResponsesold_mask": {
+      "type": "object",
+      "properties": {
+        "maskId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maskName": {
+          "type": "string"
+        },
+        "pharmacyId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pharmacyName": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "format": "float"
+        },
+        "soldAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "GetTopXUsersTransactionByDateRangeResponseuser_transaction": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "userName": {
+          "type": "string"
+        },
+        "totalTransactionAmount": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    },
+    "kdanDayOfWeek": {
+      "type": "string",
+      "enum": [
+        "unspecified",
+        "mon",
+        "tue",
+        "wed",
+        "thur",
+        "fri",
+        "sat",
+        "sun"
+      ],
+      "default": "unspecified"
+    },
+    "kdanGetAggTransactionsByDateRangeResponse": {
+      "type": "object",
+      "properties": {
+        "maskTransactions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GetAggTransactionsByDateRangeResponsemask_transaction"
+          }
+        }
+      }
+    },
+    "kdanGetMasksByNameRelevancyResponse": {
+      "type": "object",
+      "properties": {
+        "masks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pharmacyMask"
+          }
+        }
+      }
+    },
+    "kdanGetPharmaciesByNameRelevancyResponse": {
+      "type": "object",
+      "properties": {
+        "pharmacies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pharmacyPharmacy"
+          }
+        }
+      }
+    },
+    "kdanGetPharmaciesByTimeResponse": {
+      "type": "object",
+      "properties": {
+        "pharmacies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pharmacyPharmacy"
+          }
+        }
+      }
+    },
+    "kdanGetPharmaciesMaskCountsByMaskPriceRangeResponse": {
+      "type": "object",
+      "properties": {
+        "pharmaciesMaskCounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GetPharmaciesMaskCountsByMaskPriceRangeResponsepharmacies_mask_count"
+          }
+        }
+      }
+    },
+    "kdanGetSoldMasksByPharmacyResponse": {
+      "type": "object",
+      "properties": {
+        "soldMasks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GetSoldMasksByPharmacyResponsesold_mask"
+          }
+        }
+      }
+    },
+    "kdanGetTopXUsersTransactionByDateRangeResponse": {
+      "type": "object",
+      "properties": {
+        "userTransactions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GetTopXUsersTransactionByDateRangeResponseuser_transaction"
+          }
+        }
+      }
+    },
+    "kdanOrder": {
+      "type": "string",
+      "enum": [
+        "asc",
+        "desc"
+      ],
+      "default": "asc"
+    },
+    "kdanPurchaseMaskFromPharmacyRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pharmacyId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maskId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "kdanPurchaseMaskFromPharmacyResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pharmacyId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "maskId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "transactionAmount": {
+          "type": "number",
+          "format": "float"
+        },
+        "transactionDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "pharmacyMask": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "pharmacyPharmacy": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "openingHours": {
+          "type": "string"
+        },
+        "cashBalance": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "typeUrl": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}
