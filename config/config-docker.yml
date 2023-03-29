@@ -19,7 +19,7 @@ logger:
   Mode: Production
 
 postgres:
-  PostgresqlHost: localhost
+  PostgresqlHost: postgesql
   PostgresqlPort: 5432
   PostgresqlUser: kdan
   PostgresqlPassword: kdan
