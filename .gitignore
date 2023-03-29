@@ -19,3 +19,4 @@ envs/
 main
 .idea
 pgdata
+vendor
