@@ -4,8 +4,8 @@ services:
     kdan:
         container_name: api
         build:
-          context: ./
-          dockerfile: ./Dockerfile
+          context: .
+          dockerfile: Dockerfile
         ports:
           - "5000:5000"
           - "5001:5001"

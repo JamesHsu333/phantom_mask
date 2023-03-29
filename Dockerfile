@@ -23,13 +23,13 @@ RUN go build -o server cmd/server/main.go
 WORKDIR /dist
 
 # Copy binary from build to main folder
-RUN cp /build/app .
+RUN cp /build/server .
 
 FROM alpine:latest
 RUN apk --no-cache add ca-certificates
 
 COPY . .
-COPY --from=builder /dist/app /
+COPY --from=builder /dist/server /
 # Copy the code into the container
 
 EXPOSE 5000
